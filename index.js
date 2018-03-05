@@ -37,8 +37,6 @@ var MetaInspector = function(url, options){
 	this.options.timeout = this.options.timeout || 20000; //Timeout in ms
 
 	this.options.strictSSL = !!this.options.strictSSL;
-
-	this.options.headers = this.options.headers || {'User-Agent' : 'MetaInspector/1.0'};
 };
 
 //MetaInspector.prototype = new events.EventEmitter();
@@ -141,6 +139,17 @@ MetaInspector.prototype.getMetaDescription = function()
 	if(!this.description)
 	{
 		this.description = this.parsedDocument("meta[name='description']").attr("content");
+	}
+
+	return this;
+}
+MetaInspector.prototype.getPrice = function()
+{
+	debug("Parsing page description based on meta elements");
+
+	if(!this.price)
+	{
+		this.price = this.parsedDocument("del[class='reduce']").attr("content");
 	}
 
 	return this;
@@ -291,7 +300,8 @@ MetaInspector.prototype.initAllProperties = function()
 			.getOgDescription()
 			.getOgType()
 			.getOgUpdatedTime()
-			.getOgLocale();
+			.getOgLocale()
+			.getPrice();
 }
 
 MetaInspector.prototype.getAbsolutePath = function(href){
